@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.BiDi.Modules.BrowsingContext;
 using OpenQA.Selenium.Support.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Testing_Project_Mars_SpecFlow.Utilities
 {
@@ -37,6 +39,12 @@ namespace Testing_Project_Mars_SpecFlow.Utilities
 
         }
 
+        public static void ClearTxt(IWebDriver driver, By locator)
+        {
+            CustomWait.WaitToBeVisible(driver, locator, 10);
+            driver.FindElement(locator).Clear();
+        }
+
         public static void ClosePopUp(IWebDriver driver)
         {
             Click(driver, By.XPath("//a[@class='ns-close']"), "wait_click");
@@ -65,8 +73,6 @@ namespace Testing_Project_Mars_SpecFlow.Utilities
             txtbox.SendKeys(text);
 
             txtbox.SendKeys(Keys.Enter);
-
-            //txtbox.SendKeys(Keys.Tab);
         }
 
         public static void ClearEnterText(IWebDriver driver, By locator, string text)
@@ -115,7 +121,7 @@ namespace Testing_Project_Mars_SpecFlow.Utilities
 
         public static string GetText(IWebDriver driver, By locator)
         {
-            CustomWait.WaitToBeVisible(driver, locator, 10);
+            CustomWait.WaitToBeVisible(driver, locator, 15);
             IWebElement result = driver.FindElement(locator);
 
             return result.Text;
@@ -144,14 +150,26 @@ namespace Testing_Project_Mars_SpecFlow.Utilities
             driver.SwitchTo().DefaultContent();
         }
 
-        public static void SelectDropDown(IWebDriver driver, By locator, string value)
+        public static void SelectDropDown(IWebDriver driver, By locator, string value, string selectType)
         {
             CustomWait.WaitToBeVisible(driver, locator, 10);
             var dropdown = driver.FindElement(locator);
             var selectElement = new SelectElement(dropdown);
 
-            selectElement.SelectByValue(value);
+            switch(selectType)
+            {
+                case "by value":
+                    selectElement.SelectByValue(value);
+                    break;
+                case "by text":
+                    selectElement.SelectByText(value);
+                    break;
+                default:
+                    throw new NotImplementedException();
+
+            }
         }
+
 
         public static void CheckAndRemoveElement(IWebDriver driver, By locator, By removeLocator)
         {
@@ -191,6 +209,38 @@ namespace Testing_Project_Mars_SpecFlow.Utilities
             }
 
             emailTxtbox.SendKeys(firstName + "_" + lastname + randomId + "@gmail.com");
+        }
+
+        public static void CleanTable(IWebDriver driver, By tableLocator, By rowLocator, By removeBtnLocator)
+        {
+            CustomWait.WaitToBeVisible(driver, tableLocator, 10);
+            IWebElement table = driver.FindElement(tableLocator);
+            var closePopUpBtn = By.XPath("//div/a[@class='ns-close']");
+         
+            while (true)
+            {
+                try
+                {
+                    // Find rows in the table
+                    var rows = table.FindElements(rowLocator);
+
+                    if (rows.Count == 0)
+                        break;
+
+                    // Assume each row has a delete button in a specific column
+                    IWebElement deleteButton = rows[0].FindElement(removeBtnLocator); 
+                    deleteButton.Click();
+
+                    CustomWait.WaitToBeClickable(driver, closePopUpBtn, 10);
+                    driver.FindElement(closePopUpBtn).Click();
+                    CustomWait.WaitUntil(driver, closePopUpBtn, 10);
+                }
+                catch (NoSuchElementException)
+                {
+                    break;
+                }
+            }
+
         }
     }
 }

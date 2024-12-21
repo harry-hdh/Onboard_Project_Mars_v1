@@ -11,7 +11,5 @@ namespace SpecFlowProjectMars.Drivers
     public class CommonDriver
     {
         public static IWebDriver _driver;
-
-
     }
 }

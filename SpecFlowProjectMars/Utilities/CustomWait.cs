@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using SeleniumExtras.WaitHelpers;
+using OpenQA.Selenium.BiDi.Modules.BrowsingContext;
 
 
 namespace Testing_Project_Mars_SpecFlow.Utilities
@@ -26,6 +28,12 @@ namespace Testing_Project_Mars_SpecFlow.Utilities
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.AlertIsPresent());
+        }
+
+        public static void WaitUntil(IWebDriver driver, By locator, int seconds)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(locator));
         }
     }
 }
