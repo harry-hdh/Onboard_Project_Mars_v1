@@ -20,10 +20,10 @@ Scenario Outline: 02) Add new skill with invalid data
 	Then I click Add button to add new record
 	Then I should not be able to add new skill
 	Examples: 
-	| Skill | Level    |
-	| =+    | {}       |
-	| \|?   | Beginner |
-	| :     | Expert   |
+	| Skill | Level        |
+	| =+    | Intermediate |
+	| \|?   | Beginner     |
+	| :{}   | Expert       |
 
 @Add_Skills_Negative
 Scenario: 03) Add new skill without data
@@ -45,18 +45,25 @@ Scenario Outline: 05) Edit existing skill
 	Then I click Update button to update record
 	Then I should be not able to update skill 
 	Examples: 
-	| Skill | Level    |
-	| **    |          |
-	| $%    | Beginner |
-	| {}()  | Expert   |
+	| Skill | Level        |
+	| **    | Intermediate |
+	| $%    | Beginner     |
+	| {}()  | Expert       |
 
 @Edit_Skills_Negative
-Scenario Outline: 06) Edit existing skill without data
+Scenario: 06) Edit existing skill with same data
 	When I try to open form by clicking on edit icon
 	Then I try click Update button to save skill
 	Then I should not be able to update skill and see warning
 
+@Edit_Skills_Negative
+Scenario: 07) Edit existing skill without data
+	When I try to open form by clicking on edit button
+	Then I remove existing skill and level
+	Then I try click Update button to save record
+	Then should not allow to update skill and see warning
+
 @Delete_Skills
-Scenario: 07) Delete existing skill
+Scenario: 08) Delete existing skill
 	When I click on delete icon button to delete skill
 	Then I should be able to delete skill successfully
