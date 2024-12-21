@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using System.Text.RegularExpressions;
 using Testing_Project_Mars_SpecFlow.Utilities;
 
 
@@ -47,7 +48,9 @@ namespace Testing_Project_Mars_SpecFlow.Pages
 
                 "language level" => By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[last()]/tr/td[2]"),
 
-                "language row" => By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody"),
+                "language table" => By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table"),
+
+                "language rows" => By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[1]/tr"),
 
                 "skill" => By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody[last()]/tr/td[1]"),
 
@@ -57,9 +60,14 @@ namespace Testing_Project_Mars_SpecFlow.Pages
             };
         }
 
-        public void CleanRecords(IWebDriver driver, string locator, string removeBtnLocator)
+        public void CleanRecords(IWebDriver driver, string tableLocator, string rowLocator, string removeBtnLocator)
         {
-            CustomMethods.CheckAndRemoveElement(driver, GetByLocation(locator), GetByLocation(removeBtnLocator));
+            CustomMethods.CleanTable(driver, GetByLocation(tableLocator), GetByLocation(rowLocator), GetByLocation(removeBtnLocator));
+        }
+
+        public void ClearTextBox(IWebDriver driver, string locator)
+        {
+            CustomMethods.ClearTxt(driver, GetByLocation(locator));
         }
 
         public void ClickSpecific(IWebDriver driver, string location, string type)
@@ -74,27 +82,39 @@ namespace Testing_Project_Mars_SpecFlow.Pages
             CustomMethods.ClearEnterText(driver, GetByLocation(location), text);
         }
 
-        public void SelectOption(IWebDriver driver, string location, string option)
+        public void SelectOption(IWebDriver driver, string location, string option, string selectType)
         {
-            CustomMethods.SelectDropDown(driver, GetByLocation(location), option);
+            CustomMethods.SelectDropDown(driver, GetByLocation(location), option, selectType);
         }
 
-        public void EnterTxtLangOrSkill(IWebDriver driver, string txtBoxLocation, string dropDownLocation, string text, string opt)
+        public void EnterTxtLangOrSkill(IWebDriver driver, string txtBoxLocation, string dropDownLocation, string text, string opt, string selectType)
         {
             CustomMethods.ClearEnterText(driver, GetByLocation(txtBoxLocation), text);
 
-            CustomMethods.SelectDropDown(driver, GetByLocation(dropDownLocation), opt);
+            CustomMethods.SelectDropDown(driver, GetByLocation(dropDownLocation), opt, selectType);
         }
 
-        public void AssertPopUp(IWebDriver driver, string text, string message) 
+        public void AssertPopUp(IWebDriver driver, string text, string failMessage) 
         {
 
-            Assert.That(CustomMethods.GetNotificationTxt(driver).Contains(text), message);
+            Assert.That(CustomMethods.GetNotificationTxt(driver).Contains(text), failMessage);
         }
 
-        public void AssertDisplayTxt(IWebDriver driver, string location, string text, string message)
+        public void AssertDisplayTxt(IWebDriver driver, string location, string text, string failMessage)
         {
-            Assert.That(CustomMethods.GetText(driver, GetByLocation(location)).Equals(text), message);
+            string regexItem = @"^(?=.*[a-zA-Z0-9]).*$";
+            string actualText = CustomMethods.GetText(driver, GetByLocation(location));
+            if (Regex.IsMatch(actualText, regexItem))
+            {
+                Assert.That(CustomMethods.GetText(driver, GetByLocation(location)).Equals(text), failMessage);
+            }
+            else 
+            { 
+                
+                Assert.Fail(failMessage);
+
+            }
+
         }
 
     }
