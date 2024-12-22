@@ -104,7 +104,7 @@ namespace SpecFlowProjectMars.StepDefinitions
         [Then(@"I should not be able to add new language with '([^']*)'")]
         public void ThenIShouldNotBeAbleToAddNewLanguageWith(string language)
         {
-            profilePageObj.AssertDisplayTxt(_driver, "language", _languageModel.Language, "Fail to avalidate data");
+            profilePageObj.AssertDisplayTxt(_driver, "language", _languageModel.Language, "Fail to validate data");
         }
 
 
