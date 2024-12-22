@@ -126,9 +126,9 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("02) Add new skill with invalid data")]
         [NUnit.Framework.CategoryAttribute("Add_Skills_Negative")]
-        [NUnit.Framework.TestCaseAttribute("=+", "{}", null)]
+        [NUnit.Framework.TestCaseAttribute("=+", "Intermediate", null)]
         [NUnit.Framework.TestCaseAttribute("|?", "Beginner", null)]
-        [NUnit.Framework.TestCaseAttribute(":", "Expert", null)]
+        [NUnit.Framework.TestCaseAttribute(":{}", "Expert", null)]
         public void _02AddNewSkillWithInvalidData(string skill, string level, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -250,7 +250,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("05) Edit existing skill")]
         [NUnit.Framework.CategoryAttribute("Edit_Skills_Negative")]
-        [NUnit.Framework.TestCaseAttribute("**", "", null)]
+        [NUnit.Framework.TestCaseAttribute("**", "Intermediate", null)]
         [NUnit.Framework.TestCaseAttribute("$%", "Beginner", null)]
         [NUnit.Framework.TestCaseAttribute("{}()", "Expert", null)]
         public void _05EditExistingSkill(string skill, string level, string[] exampleTags)
@@ -296,14 +296,14 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("06) Edit existing skill without data")]
+        [NUnit.Framework.DescriptionAttribute("06) Edit existing skill with same data")]
         [NUnit.Framework.CategoryAttribute("Edit_Skills_Negative")]
-        public void _06EditExistingSkillWithoutData()
+        public void _06EditExistingSkillWithSameData()
         {
             string[] tagsOfScenario = new string[] {
                     "Edit_Skills_Negative"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("06) Edit existing skill without data", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("06) Edit existing skill with same data", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 54
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -331,14 +331,14 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("07) Delete existing skill")]
-        [NUnit.Framework.CategoryAttribute("Delete_Skills")]
-        public void _07DeleteExistingSkill()
+        [NUnit.Framework.DescriptionAttribute("07) Edit existing skill without data")]
+        [NUnit.Framework.CategoryAttribute("Edit_Skills_Negative")]
+        public void _07EditExistingSkillWithoutData()
         {
             string[] tagsOfScenario = new string[] {
-                    "Delete_Skills"};
+                    "Edit_Skills_Negative"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("07) Delete existing skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("07) Edit existing skill without data", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 60
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -353,9 +353,47 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 61
- testRunner.When("I click on delete icon button to delete skill", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I try to open form by clicking on edit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 62
+ testRunner.Then("I remove existing skill and level", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 63
+ testRunner.Then("I try click Update button to save record", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 64
+ testRunner.Then("should not allow to update skill and see warning", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("08) Delete existing skill")]
+        [NUnit.Framework.CategoryAttribute("Delete_Skills")]
+        public void _08DeleteExistingSkill()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Delete_Skills"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("08) Delete existing skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 67
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 68
+ testRunner.When("I click on delete icon button to delete skill", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 69
  testRunner.Then("I should be able to delete skill successfully", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
